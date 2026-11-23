@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anime World</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#090711;color:white;font-family:Arial}
+header{background:#160f23;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+.logo{font-size:23px;font-weight:bold}
+.logo span,h1 span,h2 span{color:#bd59ff}
+nav a{color:white;text-decoration:none;margin-left:12px;font-size:13px}
+.hero{padding:80px 7%;background:linear-gradient(120deg,#32104d,#090711);min-height:350px}
+.hero h1{font-size:clamp(38px,8vw,65px);margin:20px 0}
+.hero p{color:#ddd;line-height:1.7}
+.btn{display:inline-block;background:#a83fe8;color:white;text-decoration:none;padding:13px 22px;margin-top:22px;border-radius:6px}
+section{padding:45px 6%}
+input{width:100%;padding:14px;background:#191326;border:1px solid #59416e;color:white;border-radius:7px;margin:15px 0}
+.filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+button{background:#21172e;color:white;border:1px solid #654185;padding:10px 17px;border-radius:20px;cursor:pointer}
+button.active{background:#a83fe8}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:15px}
+.card{background:#191322;border-radius:10px;overflow:hidden}
+.poster{height:175px;background:linear-gradient(145deg,#712d9b,#171020);display:flex;align-items:center;justify-content:center;font-size:55px}
+.card:nth-child(2n) .poster{background:linear-gradient(145deg,#15577c,#171020)}
+.info{padding:13px}
+.info h3{font-size:16px;margin-bottom:8px}
+.info p{font-size:12px;color:#aaa;margin-bottom:12px}
+.info a{color:#d18aff;font-size:12px}
+.about{text-align:center;background:#171020}
+.about p{color:#bbb;line-height:1.8}
+footer{text-align:center;padding:30px;color:#aaa}
+@media(max-width:500px){header{padding:17px 4%}.logo{font-size:19px}nav a{font-size:12px;margin-left:7px}.hero{padding:65px 6%}.poster{height:155px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">ANIME<span>WORLD</span></div>
+<nav><a href="#home">Home</a><a href="#anime">Anime</a><a href="#about">About</a></nav>
+</header>
+<div class="hero" id="home">
+<p>WELCOME TO ANIME WORLD</p>
+<h1>ENTER THE<br><span>ANIME UNIVERSE</span></h1>
+<p>Discover legendary anime and amazing adventures!</p>
+<a class="btn" href="#anime">Explore Anime →</a>
+</div>
+<section id="anime">
+<h2>Popular <span>Anime</span></h2>
+<input id="search" placeholder="Search your favourite anime...">
+<div class="filters">
+<button class="active" data-cat="All">All</button>
+<button data-cat="Action">Action</button>
+<button data-cat="Fantasy">Fantasy</button>
+<button data-cat="Adventure">Adventure</button>
+</div>
+<div class="grid" id="grid"></div>
+<p id="empty" hidden>Anime not found!</p>
+</section>
+<section class="about" id="about">
+<h2>About <span>Us</span></h2>
+<p>Welcome to Anime World! Discover your favourite anime and explore the Japanese animation universe.</p>
+</section>
+<footer>ANIME WORLD ❤️<br><br>© 2026 All Rights Reserved</footer>
+<script>
+const anime=[
+["Demon Slayer","Action",2019,"⚔️"],
+["Attack on Titan","Action",2013,"🛡️"],
+["Jujutsu Kaisen","Fantasy",2020,"👊"],
+["Naruto","Adventure",2002,"🍥"],
+["One Piece","Adventure",1999,"🏴‍☠️"],
+["Death Note","Fantasy",2006,"📓"],
+["Dragon Ball","Action",1986,"🐉"],
+["Solo Leveling","Fantasy",2024,"🌑"],
+["Black Clover","Adventure",2017,"🍀"],
+["My Hero Academia","Action",2016,"⚡"]
+];
+let category="All";
+const grid=document.getElementById("grid");
+const search=document.getElementById("search");
+function showAnime(){
+const q=search.value.toLowerCase();
+const result=anime.filter(a=>a[0].toLowerCase().includes(q)&&(category==="All"||a[1]===category));
+grid.innerHTML=result.map(a=>`
+<div class="card">
+<div class="poster">${a[3]}</div>
+<div class="info">
+<h3>${a[0]}</h3>
+<p>${a[1]} • ${a[2]}</p>
+<a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/results?search_query=${encodeURIComponent(a[0]+" official trailer")}">Watch Trailer ↗</a>
+</div></div>`).join("");
+document.getElementById("empty").hidden=result.length!==0;
+}
+search.addEventListener("input",showAnime);
+document.querySelectorAll(".filters button").forEach(btn=>{
+btn.addEventListener("click",()=>{
+document.querySelector(".filters .active").classList.remove("active");
+btn.classList.add("active");
+category=btn.dataset.cat;
+showAnime();
+});
+});
+showAnime();
+</script>
+</body>
+</html>
